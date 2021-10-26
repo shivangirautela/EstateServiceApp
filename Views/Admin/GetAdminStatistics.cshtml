@@ -1,0 +1,147 @@
+﻿@model AdminStatisticsViewModel
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Property Status Count</h4>
+                            <canvas id="myChart" width="450" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Property Type Count</h4>
+                            <canvas id="myBarChart" width="500" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Property In City</h4>
+                            <canvas id="myLineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Properties in Districts</h4>
+                            <canvas id="myDoughnutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Pie chart</h4>
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Scatter chart</h4>
+                            <canvas id="scatterChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <footer class="footer">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2020 <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center text-muted">Free <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrap dashboard</a> templates from Bootstrapdash.com</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    $(function () {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: "pie",
+            data:@(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.PropertyStatusPieChartData))),
+        });
+    });
+    </script>
+    <style>
+        .container {
+            padding: 10px 10px 10px 10px;
+            text-align: center;
+        }
+        .row{
+            text-align:center;
+            align-content:center;
+            align-self:center;
+            align-items:center;
+        }
+        h2 {
+            color: #123456;
+        }
+        body{
+            background-color:cornsilk;
+        }
+    </style>
+
+    <script>
+        const ctx = document.getElementById('myBarChart');
+        const myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data:@(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.PropertyTypeBarChartData))),
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const ctxLine = document.getElementById('myLineChart');
+        const myLineChart = new Chart(ctxLine, {
+            type: 'line',
+            data: @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.PropertyCityLineChartData))),
+            options: {
+                animations: {
+                    tension: {
+                        duration: 1000,
+                        easing: 'linear',
+                        from: 1,
+                        to: 0,
+                        loop: true
+                    }
+                },
+                scales: {
+                    y: { // defining min and max so hiding the dataset does not change scale range
+                        min: 0,
+                        max: 10
+                    }
+                }
+            }
+        });
+
+        const ctxdough = document.getElementById('myDoughnutChart');
+        const myDoughnutChart = new Chart(ctxdough, {
+            type: 'doughnut',
+            data: @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.PropertyDistrictDoughnutChartData))),
+        });
+    </script>
+
+

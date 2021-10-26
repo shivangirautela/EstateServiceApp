@@ -1,0 +1,90 @@
+﻿@{
+    var recordsPerPage = Model;
+    var totalRecords = ViewBag.TotalRecords == null ? 0 : ViewBag.TotalRecords;
+    int numberOfButtons;
+    if (totalRecords % recordsPerPage == 0)
+    {
+        numberOfButtons = totalRecords / recordsPerPage;
+    }
+    else
+    {
+        numberOfButtons = (totalRecords / recordsPerPage) + 1;
+    }
+}
+<script src="~/js/site.js"></script>
+<style>
+
+    body {
+        color: #2c3e50;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+    }
+
+    .pagination-container {
+        margin: 100px auto;
+        text-align: center;
+    }
+
+    .pagination {
+        position: relative;
+    }
+
+    a {
+        position: relative;
+        display: inline-block;
+        color: #2c3e50;
+        text-decoration: none;
+        font-size: 1.7rem;
+        padding: 8px 16px 10px;
+    }
+
+    &:hover,
+    .pagination-active {
+        color: red;
+    }
+
+    &::before {
+        transform: scale(1);
+    }
+
+    .pagination-active {
+        color: red;
+    }
+
+    &::before {
+        transform: scale(1);
+    }
+
+    .pagination-newer {
+        margin-right: 50px;
+    }
+
+    .pagination-older {
+        margin-left: 50px;
+    }
+</style>
+
+<ul class="pagination">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <li>
+            <a asp-route-page=@(ViewBag.CurrentPage-1)>Prev</a>
+        </li>
+    }
+
+    @for (int i = 0; i < numberOfButtons; i++)
+    {
+        @if (ViewBag.CurrentPage < numberOfButtons)
+        {
+            <li>
+                <a asp-route-page="@(ViewBag.CurrentPage+i)">@(ViewBag.CurrentPage+i)</a>
+            </li>
+        }
+    }
+    @if (ViewBag.CurrentPage < numberOfButtons)
+    {
+        <li>
+            <a asp-route-page=@(ViewBag.CurrentPage+1)>Next</a>
+        </li>
+    }
+</ul>

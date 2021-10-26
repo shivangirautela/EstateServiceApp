@@ -1,0 +1,139 @@
+﻿@model IEnumerable<PropertyModel>
+
+<style>
+    body {
+        background-color: #f97743;
+        background-image: url(https://c.wallhere.com/photos/45/22/room_living_room_furniture_white_interior-635269.jpg!d);
+    }
+
+    .advanced {
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500
+    }
+
+    #typeValue,
+    #typeValue:focus,
+    #typeValue:active {
+        color: #fff;
+        background-color: #00838f !important;
+        border-color: #00838f !important;
+        box-shadow: none
+    }
+
+    .advanced {
+        color: #00838f !important
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border: 1px solid #00838f
+    }
+
+
+    .carousel-cell {
+        width: 77%;
+        margin: 0,0,0,0;
+        background: #8C8;
+        border-radius: 5px;
+    }
+
+        /* cell number */
+        .carousel-cell:before {
+            display: block;
+            text-align: center;
+            line-height: 200px;
+            font-size: 80px;
+            color: white;
+        }
+
+    .main-carousel {
+        width: 600px;
+        margin:0 ,0,0,0;
+    }
+</style>
+
+<div class="main-carousel" data-flickity='{ "cellAlign": "left", "contain": true ,"autoPlay": true }'>
+    @foreach (var item in Model)
+    {
+        <div class="carousel-cell">
+            <img src="@item.CoverImageUrl" width="600" height="400">
+        </div>
+    }
+    <div class="carousel-cell">
+        <img src="~/images/43.jpg" width="600" height="400">
+    </div>
+    <div class="carousel-cell">
+        <img src="~/images/44.jpg " width="600" height="400">
+    </div>
+    <div class="carousel-cell">
+        <img src="~/images/45.jpg" width="600" height="400">
+    </div>
+    <div class="carousel-cell">
+        <img src="~/images/50.jfif" width="600" height="400">
+    </div>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<form method="post" asp-action="Index" id="formnew">
+
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-10">
+                <div class="card p-3 py-4">
+                    <h5>An Easier way to find your Housing</h5>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-3">
+                            <div class="dropdown">
+                                <select class="form-control" name="typeValue" id="typeValue" asp-items="Html.GetEnumSelectList<PropertyStatusEnum>()">
+                                    <option selected value="">Property Status</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="search" class="form-control" name="address" value="@ViewData["address"]" placeholder="Enter address e.g. street, city and state or zip" />
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" class="btn btn-secondary btn-block" value="Search Results " />
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <a data-toggle="collapse" href="#collapseExample" style="background-color:white;padding:20px 20px;" role="button" aria-expanded="false" aria-controls="collapseExample" class="advanced"> Advance Search With Filters <i class="fa fa-angle-down"></i> </a>
+                    <br />
+
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-4"> <input type="search" name="search" value="@ViewData["id"]" placeholder="Property ID" class="form-control"> </div>
+                                <div class="col-md-4"> <input type="search" class="form-control" name="minBudget" value="@ViewData["min"]" placeholder="Enter Min Budget"> </div>
+                                <div class="col-md-4"> <input type="search" class="form-control" name="maxBudget" value="@ViewData["max"]" placeholder="Enter Max Budget"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@if (@ViewData["id"] != null || @ViewData["type"] != null || @ViewData["address"] != null || @ViewData["max"] != null || @ViewData["min"] != null)
+{
+    @await Component.InvokeAsync("FeaturedProperties", new { id = @ViewData["id"], type = @ViewData["type"], address = @ViewData["address"], minBudget = @ViewData["min"], maxBudget = @ViewData["max"] })
+}
+
+<br />
+<br />
+<br />
+<br />
+
+
+

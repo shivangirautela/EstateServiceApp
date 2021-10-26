@@ -1,0 +1,384 @@
+﻿@model PropertyModel
+@{
+    ViewData["Title"] = "AddNewProperty";
+}
+
+<div class="w-80 align-content-lg-center ">
+    <h1>Post New Property</h1>
+    <link href="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
+          rel="stylesheet" type="text/css" />
+    <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"></script>
+    <script>
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.image-upload-wrap').hide();
+
+                    $('.file-upload-image').attr('src', e.target.result);
+                    $('.file-upload-content').show();
+
+                    $('.image-title').html(input.files[0].name);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+
+            } else {
+                removeUpload();
+            }
+        }
+
+        function removeUpload() {
+            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+            $('.file-upload-content').hide();
+            $('.image-upload-wrap').show();
+        }
+        $('.image-upload-wrap').bind('dragover', function () {
+            $('.image-upload-wrap').addClass('image-dropping');
+        });
+        $('.image-upload-wrap').bind('dragleave', function () {
+            $('.image-upload-wrap').removeClass('image-dropping');
+        });
+
+    </script>
+    <style>
+        .file-upload {
+            background-color: #ffffff;
+            width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .file-upload-btn {
+            width: 100%;
+            margin: 0;
+            color: black;
+            background: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            border-bottom: 4px solid red;
+            transition: all .2s ease;
+            outline: none;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+            .file-upload-btn:hover {
+                background: red;
+                color: #ffffff;
+                transition: all .2s ease;
+                cursor: pointer;
+            }
+
+            .file-upload-btn:active {
+                border: 0;
+                transition: all .2s ease;
+            }
+
+        .file-upload-content {
+            display: none;
+            text-align: center;
+        }
+
+        .file-upload-input {
+            position: absolute;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            outline: none;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-upload-wrap {
+            margin-top: 20px;
+            border: 4px dashed lawngreen;
+            position: relative;
+        }
+
+            .image-dropping,
+            .image-upload-wrap:hover {
+                background-color: red;
+                border: 4px dashed #ffffff;
+            }
+
+        .image-title-wrap {
+            padding: 0 15px 15px 15px;
+            color: #ffffff;
+        }
+
+        .drag-text {
+            text-align: center;
+        }
+
+            .drag-text h3 {
+                font-weight: 100;
+                text-transform: uppercase;
+                color: black;
+                padding: 60px 0;
+            }
+
+        .file-upload-image {
+            max-height: 200px;
+            max-width: 200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .remove-image {
+            width: 200px;
+            margin: 0;
+            color: #fff;
+            background: #cd4535;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            border-bottom: 4px solid #b02818;
+            transition: all .2s ease;
+            outline: none;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+            .remove-image:hover {
+                background: #c13b2a;
+                color: #ffffff;
+                transition: all .2s ease;
+                cursor: pointer;
+            }
+
+            .remove-image:active {
+                border: 0;
+                transition: all .2s ease;
+            }
+
+        .sunny, .ui-spinner {
+            color: darkgray;
+        }
+
+        h1 {
+            background-color: crimson;
+            color: yellow;
+            padding: 20px 20px;
+            align-content: center;
+            text-align: center;
+        }
+
+        .wholeform {
+            padding: inherit;
+            margin: 10px 10px auto 10px;
+            text-align: justify;
+        }
+
+        .custom-file-input.selected:lang(en)::after {
+            content: "" !important;
+        }
+
+        .custom-file {
+            overflow: hidden;
+        }
+
+        .custom-file-input {
+            white-space: nowrap;
+        }
+
+        .form-row {
+            text-align: center;
+            background-color: lightgoldenrodyellow;
+            font-weight: 400;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-palette: dark;
+            font-size: larger;
+        }
+    </style>
+    <hr />
+    @if (ViewBag.IsSuccess == true)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Congratulations!</strong> Your property has been successfully posted.
+            Click <a asp-controller="Property" asp-action="GetProperty" asp-route-id="@ViewBag.PropertyId">here</a> to view the details.
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+    <div class="wholeform">
+
+        <form method="post" enctype="multipart/form-data" asp-action="AddNewProperty" asp-controller="Property">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                        <input asp-for="Title" placeholder="What is your property called ?" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PropertyStatus" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                        <select asp-for="PropertyStatus" class="form-control" asp-items="Html.GetEnumSelectList<PropertyStatusEnum>()">
+                            <option value="">Please select your Property Status</option>
+                        </select>
+                        <span asp-validation-for="PropertyStatus" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Type" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                        <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<PropertyType>()">
+                            <option value="">Please select your Property Type</option>
+                        </select>
+                        <span asp-validation-for="Type" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="AvailableFrom" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                        <input asp-for="AvailableFrom" class="form-control" />
+                        <span asp-validation-for="AvailableFrom" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" rows="4" placeholder="Please specify property details." class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="BedRooms" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                        <input asp-for="BedRooms" type="number" step="1" min="1" max="50" class="form-control sunny" />
+                        <span asp-validation-for="BedRooms" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="BathRooms" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                        <input asp-for="BathRooms" type="number" step="1" min="1" max="50" class="form-control sunny" />
+                        <span asp-validation-for="BathRooms" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="PropertyArea" class="control-label"></label>(In sq. ft)&nbsp;&nbsp;<span style="color:red">*</span>
+                        <input asp-for="PropertyArea" type="number" class="form-control" />
+                        <span asp-validation-for="PropertyArea" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="District" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                    <input asp-for="District" class="form-control" />
+                    <span asp-validation-for="District" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="City" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Address" class="control-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                    <textarea asp-for="Address" rows="4" placeholder="Please enter the location details with pincode." class="form-control"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Price" class="control-label"></label>(INR.)&nbsp;&nbsp;<span style="color:red">*</span>
+                    <input asp-for="Price" placeholder="How much do you expect from the customers ?( in INR.)" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="form-group">
+
+                        <div class="file-upload">
+                            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">
+                                <label asp-for="CoverPhoto" class="form-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                            </button>
+                            <div class="image-upload-wrap">
+                                <input asp-for="CoverPhoto" class="file-upload-input" id="custom-file" type='file' onchange="readURL(this);" accept="image/*" />
+                                <div class="drag-text">
+                                    <h3>Drag and drop a file or select add Image</h3>
+                                </div>
+                            </div>
+                            <div class="file-upload-content">
+                                <img class="file-upload-image" src="#" alt="your image" />
+                                <div class="image-title-wrap">
+                                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <label asp-for="GalleryFiles" class="form-label"></label>&nbsp;&nbsp;<span style="color:red">*</span>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <label class="custom-file-label" for="custom-file">Select images </label>
+                            <input asp-for="GalleryFiles" multiple type="file" class="custom-file-input" id="GalleryFiles"
+                                   aria-describedby="GalleryFiles">
+                        </div>
+                        <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="col-md-4">
+                    <header><strong>Facilities available</strong></header>
+                </div>
+                    @for (int i = 0; i < Model.Features.Count; i++)
+                    {
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                <input asp-for="@Model.Features[i].Value" type="hidden" />
+                                <input asp-for="Features[i].Selected" />@Model.Features[i].Text
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+</form>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+        
+        var name = document.getElementById("GalleryFiles").files[0].name;
+        var nextSibling = e.target.nextElementSibling
+        nextSibling.innerText = name
+    })
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

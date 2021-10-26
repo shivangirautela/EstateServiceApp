@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav pull-right">
+    @if (SignInManager.IsSignedIn(User))
+    {
+
+        <li class="nav-item dropdown">
+            <a style="font-size: inherit;" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
+                Hi! @(User.FindFirst("UserFirstName").Value +" "+ User.FindFirst("UserLastName").Value)
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark flex-fill" id="style-switch-button" aria-labelledby="navbarDarkDropdownMenuLink">
+                <li>
+                    <a style="color:cadetblue" class="dropdown-item" asp-action="Logout" asp-controller="Account">Logout</a>             
+                </li>
+                @if (User.IsInRole("Customer"))
+                {
+                <li>
+                    <a style="color: cadetblue" class="dropdown-item" href="#">Manage Your Properties</a>
+                </li>
+                }
+            </ul>
+        </li>
+
+    }
+    else
+    {
+        <li class="nav-item">
+            <a style="font-size: medium;" class="nav-link text-dark" asp-action="Signup" asp-controller="Account">Register</a>
+        </li>
+        <li class="nav-item">
+            <a style="font-size: medium;" class="nav-link text-dark" asp-action="Login" asp-controller="Account">Login</a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,92 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EstateServiceApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+
+
+    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,700">-->
+    <!-- Swiper slider-->
+    <!--<link href="~/css/swiper-bundle.min.css" rel="stylesheet" />-->
+    <!-- Leaflet maps-->
+    <!--<link href="~/css/leaflet.css" rel="stylesheet" />-->
+    <!-- Choices.js [Custom select]-->
+    <!--<link href="~/css/choices.css" rel="stylesheet" />-->
+    <!-- Theme stylesheet-->
+    <!--<link rel="stylesheet" href="~/css/style.default.css" id="theme-stylesheet">-->
+    <!-- Custom stylesheet - for your changes-->
+    <!--<link rel="stylesheet" href="~/css/custom.css">-->
+    <!-- Favicon and apple touch icons-->
+    <!--<link rel="shortcut icon" href="~/img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="~/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="~/img/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/img/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/img/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/img/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/img/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/img/apple-touch-icon-152x152.png">-->
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a style="background-color: cadetblue; font-size: large;" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EstateServiceApp</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a style="font-size:medium;" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="font-size: medium;" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="font-size: medium;" class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="GetAllProperties">All Properties</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="font-size: medium;" class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="AddNewProperty">Post Property</a>
+                        </li>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a style="font-size: medium;" class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <partial name="_Footer" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+
+    @*<script src="~/js/noframework.waypoints.js"></script>
+    <script src="~/js/swiper-bundle.min.js"></script>
+    <script src="~/js/choices.js"></script>
+    <script src="~/js/theme.js"></script>
+    <script src="~/js/leaflet.js"></script>
+    <script src="~/js/map.js"></script>*@
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

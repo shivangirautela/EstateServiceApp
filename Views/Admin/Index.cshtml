@@ -1,0 +1,203 @@
+﻿@model IEnumerable<PropertyModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script src="~/js/site.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signalr.js/2.2.1/jquery.signalR.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signalr.js/2.2.1/jquery.signalR.min.js"></script>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.0.1/r-2.2.9/sc-2.0.5/sb-1.3.0/sl-1.3.3/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.6.0/dt-1.11.3/af-2.3.7/b-2.0.1/r-2.2.9/sc-2.0.5/sb-1.3.0/sl-1.3.3/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-xl-12 grid-margin stretch-card flex-column">
+                <h5 class="mb-2 text-titlecase mb-4">Admin Statistics</h5>
+                <div class="row">
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div style="background-color:deepskyblue" class="card">
+                            <div class="card-body">      
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div>
+                                        <p class="mb-4">Bedrooms</p>
+                                        <h2 class="mb-0">@ViewData["bedrooms"]</h2>
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <p class="mb-4">Bathrooms</p>
+                                        <h2 class="mb-0">@ViewData["bathrooms"]</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div style="background-color:orange" class="card">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <p>Properties Price Starting From</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3 class="mb-"> @ViewBag.MinPrice INR.</h3>
+                                </div>
+                                <div class=" d-flex flex-column justify-content-between">
+                                    <p> Goes Upto</p>
+                                    <h4> @ViewBag.MaxPrice INR.</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 grid-margin stretch-card">
+                        <div style="background-color:greenyellow" class="card">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <p>Properties Having Pools</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3 class="mb-"> @ViewData["pool"]</h3>
+                                </div>
+                                <div class=" d-flex flex-column justify-content-between">
+                                    <p>Properties Having Parkings</p>
+                                    <h4> @ViewData["parking"]</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 grid-margin stretch-card">
+                <div style="background-color:yellow" class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
+                            <div>
+                                <p class="mb-2 text-md-center text-lg-left">Total Registered Properties</p>
+                                <h1 class="mb-0">@ViewBag.TotalProperties</h1>
+                            </div>
+                            <i class="typcn typcn-briefcase icon-xl text-secondary"></i>
+                        </div>
+                        <canvas id="expense-chart" height="80"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 grid-margin stretch-card">
+                <div style="background-color:deeppink" class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
+                            <div>
+                                <p class="mb-2 text-md-center text-lg-left">Total Photos Available</p>
+                                <h1 class="mb-0">+ @ViewBag.TotalPhotos</h1>
+                            </div>
+                            <i class="typcn typcn-chart-pie icon-xl text-secondary"></i>
+                        </div>
+                        <canvas id="budget-chart" height="80"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 grid-margin stretch-card">
+                <div style="background-color:orangered" class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between justify-content-md-center justify-content-xl-between flex-wrap mb-4">
+                            <div>
+                                <p class="mb-2 text-md-center text-lg-left">Total Users Online</p>
+                                <h1 class="mb-0">@ViewBag.UsersOnline</h1>
+                            </div>
+                            <i class="typcn typcn-clipboard icon-xl text-secondary"></i>
+                        </div>
+                        <canvas id="balance-chart" height="80"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h4 class="card-title">Properties Data</h4>
+                        <p class="card-description">
+                            Details<code>All registered data details</code>
+                        </p>
+                        <div class="table-responsive">
+                            <table id="tableid" class="table table-hover table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.Id)</th>
+                                        <th>@Html.DisplayNameFor(model => model.CoverImageUrl)</th>
+                                        <th>@Html.DisplayNameFor(model => model.PostedOn)</th>
+                                        <th> Property Status</th>
+                                        <th>@Html.DisplayNameFor(model => model.BedRooms)</th>
+                                        <th>@Html.DisplayNameFor(model => model.BathRooms)</th>
+
+                                        <th>@Html.DisplayNameFor(model => model.Title)</th>
+                                        <th>Property Type</th>
+                                        <th>@Html.DisplayNameFor(model => model.Address)</th>
+                                        <th>@Html.DisplayNameFor(model => model.Price)</th>
+                                        <th>Property Available From </th>
+                                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                                        <th>@Html.DisplayNameFor(model => model.PropertyArea)</th>
+                                        <th>@Html.DisplayNameFor(model => model.TotalPhotos)</th>
+                                        <th>@Html.DisplayNameFor(model => model.City)</th>
+                                        <th>@Html.DisplayNameFor(model => model.District)</th>
+                                        <th>@Html.DisplayNameFor(model => model.PropertyOwnerId)</th>
+                                        <th>@Html.DisplayNameFor(model => model.HasParking)</th>
+                                        <th>@Html.DisplayNameFor(model => model.HasPool)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                        <td class="py-1"><img src="@item.CoverImageUrl" /></td>
+                                        <td>@Html.DisplayFor(modelItem => item.PostedOn)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PropertyStatus)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.BedRooms)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.BathRooms)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.AvailableFrom)</td>
+
+                                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PropertyArea)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TotalPhotos)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.City)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.District)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PropertyOwnerId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.HasParking)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.HasPool)</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            @await Html.PartialAsync("_Pagination", 5)
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+    <footer class="footer">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2020 <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Your Estate Service</a>. All rights reserved.</span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center text-muted">Free <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Your Estate Service</a></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- partial -->
+</div>
